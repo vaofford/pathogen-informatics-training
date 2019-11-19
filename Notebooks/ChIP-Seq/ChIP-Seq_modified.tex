@@ -1,0 +1,1869 @@
+\documentclass[11pt]{article}
+\renewcommand{\arraystretch}{1.5} % Default value: 1
+\usepackage{sectsty}
+\allsectionsfont{\color{blue}\fontfamily{lmss}\selectfont}
+\usepackage{fontspec}
+\setmainfont{XCharter}
+
+\usepackage{listings}
+\lstset{
+basicstyle=\small\ttfamily,
+tabsize=8,
+columns=flexible,
+breaklines=true,
+frame=tb,
+rulecolor=\color[rgb]{0.8,0.8,0.7},
+backgroundcolor=\color[rgb]{1,1,0.91},
+postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+\usepackage{fontawesome}
+
+
+\usepackage{mdframed}
+\newmdenv[
+  backgroundcolor=gray,
+  fontcolor=white,
+  nobreak=true,
+]{terminalinput}
+
+
+
+\usepackage{parskip}
+
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{labelformat=empty, textfont=bf}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.85\linewidth}{0.3\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+
+
+
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{index}
+
+
+
+
+
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+
+
+
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+
+
+
+\renewcommand{\PY}[2]{{#2}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\rhead{\color{gray}\sf\small\rightmark}
+\lhead{\nouppercase{\color{gray}\sf\small\leftmark}}
+\cfoot{\color{gray}\sf\thepage}
+\renewcommand{\footrulewidth}{1pt}
+\begin{document}
+
+
+
+
+
+    \hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+ChIP-Seq is the combination of chromatin immunoprecipitation (ChIP)
+assays with high-throughput sequencing (Seq) and can be used to identify
+DNA binding sites for transcription factors and other proteins. The goal
+of this hands-on session is to perform the basic steps of the analysis
+of ChIP-Seq data, as well as some downstream analysis. Throughout this
+practical we will try to identify potential transcription factor binding
+sites of PAX5 in human lymphoblastoid cells.
+
+\hypertarget{learning-outcomes}{%
+\subsection{Learning outcomes}\label{learning-outcomes}}
+
+By the end of this tutorial you can expect to be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  generate an unspliced alignment by aligning raw sequencing data to the
+  human genome using
+  \textbf{\href{http://bowtie-bio.sourceforge.net/bowtie2/index.shtml}{Bowtie2}}
+\item
+  manipulate the SAM output in order to visualise the alignment in
+  \textbf{\href{http://software.broadinstitute.org/software/igv/}{IGV}}
+\item
+  based on the aligned reads, find immuno-enriched areas using the peak
+  caller \textbf{\href{https://github.com/taoliu/MACS}{MACS2}}
+\item
+  perform functional annotation and motif analysis on the predicted
+  binding regions
+\end{itemize}
+
+\hypertarget{tutorial-sections}{%
+\subsection{Tutorial sections}\label{tutorial-sections}}
+
+This tutorial comprises the following sections:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \href{dataset-intro.ipynb}{Introducing the tutorial dataset}
+\item
+  \href{pax5-alignment.ipynb}{Aligning the PAX5 sample to the genome}
+\item
+  \href{manipulate-sam.ipynb}{Manipulating SAM output}
+\item
+  \href{alignment-visualisation.ipynb}{Visualising alignments in IGV}
+\item
+  \href{control-alignment.ipynb}{Aligning the control sample to the
+  genome}
+\item
+  \href{identifying-enriched-areas.ipynb}{Identifying enriched areas
+  using MACS}
+\item
+  \href{file-formats.ipynb}{File formats}
+\item
+  \href{inspecting-genomic-regions.ipynb}{Inspecting genomic regions
+  using bedtools}
+\item
+  \href{motif-analysis.ipynb}{Motif analysis}
+\end{enumerate}
+
+\hypertarget{authors}{%
+\subsection{Authors}\label{authors}}
+
+This tutorial was converted into a Jupyter notebook by
+\href{https://github.com/vaofford}{Victoria Offord} based on materials
+developed by Angela Goncalves, Myrto Kostadima, Steven Wilder and Maria
+Xenophontos.
+
+\newpage
+
+    \hypertarget{prerequisites}{%
+\subsection{Prerequisites}\label{prerequisites}}
+
+This tutorial assumes that you have the following software or packages
+and their dependencies installed on your computer. The software or
+packages used in this tutorial may be updated from time to time so, we
+have also given you the version which was used when writing the
+tutorial.
+
+    \begin{longtable}[]{@{}ccc@{}}
+\hline
+\begin{minipage}[b]{0.18\columnwidth}\centering
+Package\strut
+\end{minipage} & \begin{minipage}[b]{0.60\columnwidth}\centering
+Link for download/installation instructions\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Version tested\strut
+\end{minipage}\tabularnewline
+\hline
+\endhead
+\begin{minipage}[t]{0.18\columnwidth}\centering
+bedtools\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\centering
+http://bedtools.readthedocs.io/en/latest/content/installation.html\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+2.26.0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\centering
+Bowtie2\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\centering
+http://bowtie-bio.sourceforge.net/bowtie2\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+2.3.4.1\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\centering
+IGV\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\centering
+http://software.broadinstitute.org/software/igv\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+2.7.2\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\centering
+MACS2\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\centering
+https://github.com/taoliu/MACS\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+2.1.0.20150420\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\centering
+meme\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\centering
+http://meme-suite.org/tools/meme\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+4.10.0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\centering
+samtools\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\centering
+https://github.com/samtools/samtools\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+1.9\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\centering
+tomtom\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\centering
+http://web.mit.edu/meme\_v4.11.4/share/doc/tomtom.html\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+4.10.0\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\centering
+UCSC tools\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\centering
+http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86\_64\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+NA\strut
+\end{minipage}\tabularnewline
+\hline
+\end{longtable}
+
+    \hypertarget{where-can-i-find-the-tutorial-data}{%
+\subsection{Where can I find the tutorial
+data?}\label{where-can-i-find-the-tutorial-data}}
+
+You can find the data for this tutorial by typing the following command
+in a new terminal window.
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}\PY{n+nb}{cd} /home/manager/course\PYZus{}data/Module6\PYZus{}CHiPSeq
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    Now, let's head to the first section of this tutorial which will be
+\href{dataset-intro.ipynb}{introducing the tutorial dataset}.
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{introducing-the-tutorial-dataset}{%
+\section{Introducing the tutorial
+dataset}\label{introducing-the-tutorial-dataset}}
+
+The data we will use for this practical comes from the
+\href{https://www.encodeproject.org/}{\textbf{ENCODE (Encyclopedia of
+DNA Elements) Consortium}}, a big international collaboration aimed at
+building a comprehensive catalogue of functional elements in the human
+genome. As part of this project, many human tissues and cell lines were
+studied using high-throughput sequencing technologies.
+
+In this tutorial, we will work on datasets from,
+\href{https://www.genome.gov/26524238/encode-project-common-cell-types/}{\textbf{GM12878}},
+a lymphoblastoid cell line produced from the blood of a female donor of
+European ancestry. Specifically, we will look at binding data for the
+transcription factor \textbf{PAX5}. PAX5 is a known regulator of B-cell
+differentiation. Aberrant expression of PAX5 is linked to lymphoblastoid
+leukaemia. If there is time, we will also look at ChIP-seq data for
+\textbf{Polymerase II} and the histone modification \textbf{H3K36me3}.
+
+The .fastq file that we will align is called
+\textbf{\texttt{PAX5.fastq}}. This file is based on PAX5 ChIP-Seq data
+produced by the Myers lab in the context of the ENCODE project. We will
+align these reads to the human genome.
+
+    \textbf{Take a look at our PAX5 FASTQ file.}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}head PAX5.fastq
+\end{Verbatim}
+\end{terminalinput}
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{aligning-the-pax5-sample-to-the-genome}{%
+\section{Aligning the PAX5 sample to the
+genome}\label{aligning-the-pax5-sample-to-the-genome}}
+
+There are a number of competing tools for short read alignment, each
+with its own set of strengths, weaknesses, and caveats. Here we will use
+\href{http://bowtie-bio.sourceforge.net/bowtie2/index.shtml}{\textbf{Bowtie2}},
+a widely used ultrafast, memory efficient short read aligner.
+
+Bowtie2 has a number of parameters in order to perform the alignment. To
+view them all type:
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bowtie2 \PYZhy{}\PYZhy{}help
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    Bowtie2 uses indexed genome for the alignment in order to keep its
+memory footprint small. Because of time constraints we will build the
+index only for one chromosome of the human genome. For this we need the
+chromosome sequence in fasta format. This is stored in a file named
+\textbf{\texttt{HS19.fa}}, under the subdirectory genome.
+
+    We will be storing our indexed genome in a folder called
+\texttt{bowtie\_index}.
+
+\textbf{Check if the \texttt{bowtie\_index} folder already exists.}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}ls bowtie\PYZus{}index
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{If it doesn't exist already, create the folder
+\texttt{bowtie\_index}.}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}mkdir bowtie\PYZus{}index
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Then, index the chromosome using the command:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bowtie2\PYZhy{}build genome/HS19.fa bowtie\PYZus{}index/hs19
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    Be patient, building the index may take 5-10 minutes!
+
+This command will output 6 files that constitute the index. These files
+that have the prefix \textbf{hs19} and are stored in the
+\texttt{bowtie\_index} directory.
+
+\textbf{To check the files have been successfully created type:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}ls \PYZhy{}l bowtie\PYZus{}index
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    Now that the genome is indexed we can move on to the actual alignment.
+In the following command the first argument (\textbf{\texttt{-k}})
+instructs Bowtie2 to report only uniquely mapped reads. The following
+argument (\textbf{\texttt{-x}}) specifies the basename of the index for
+the genome to be searched; in our case is \textbf{hs19}. Then there is
+the name of the FASTQ file and the last argument (\textbf{\texttt{-S}})
+that ensures that the output is in SAM format.
+
+\newpage
+
+\textbf{Align the PAX5 reads using Bowtie2:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bowtie2 \PYZhy{}k \PY{l+m}{1} \PYZhy{}x bowtie\PYZus{}index/hs19 PAX5.fastq \PYZhy{}S PAX5.sam
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    The above command outputs the alignments in \textbf{SAM} format and
+stores them in the file \textbf{\texttt{PAX5.sam}}.
+
+In general before you run Bowtie2, you have to know which FASTQ format
+you have. The available FASTQ formats in Bowtie2 are:
+
+\begin{verbatim}
+--phred33 input quals are Phred+33 (default)
+--phred64 input quals are Phred+64
+--int-quals input quals are specified as space-delimited integers
+\end{verbatim}
+
+See http://en.wikipedia.org/wiki/FASTQ\_format to find more detailed
+information about the different quality encodings.
+
+The \texttt{PAX5.fastq} file we are working on uses encoding
+\textbf{Phred+33} (the default). Bowtie2 will take 2-3 minutes to align
+the file. This is fast compared to other aligners that sacrifice some
+speed to obtain higher sensitivity.
+
+\textbf{Look at the file in the SAM format by typing:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}head \PYZhy{}n \PY{l+m}{10} PAX5.sam
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    You can find more information on the SAM format by looking at
+\url{https://samtools.github.io/hts-specs/SAMv1.pdf}.
+
+    \hypertarget{questions}{%
+\subsection{Questions}\label{questions}}
+
+\textbf{Q1. How can you distinguish between the header of the SAM format
+and the actual alignments?}\\
+\textit{Hint: look at section 1.3 in the documentation
+(https://samtools.github.io/hts-specs/SAMv1.pdf)}.
+
+\textbf{Q2. What information does the header provide you with?}\\
+\textit{Hint: use the documentation to work out what the header tags mean}
+
+\textbf{Q3. Which chromosome are the reads mapped to?}
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{manipulating-sam-output}{%
+\section{Manipulating SAM output}\label{manipulating-sam-output}}
+
+SAM files are rather big and when dealing with a high volume of HTS
+data, storage space can become an issue. Using
+\href{http://samtools.sourceforge.net/}{samtools} we can convert SAM
+files to BAM files (their binary equivalent files that are not human
+readable) that occupy much less space.
+
+To convert your SAM file to a BAM file, you have to instruct
+\texttt{samtools} that the input is in SAM format (\texttt{-S}), the
+output should be in BAM format (\texttt{-b}) and that you want the
+output to be stored in the file specified by the \texttt{-o} option.
+
+    \textbf{Convert SAM to BAM using \texttt{samtools} and store the output
+in the file \texttt{PAX5.bam}:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}samtools view \PYZhy{}bSo PAX5.bam PAX5.sam
+\end{Verbatim}
+\end{terminalinput}
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{visualising-alignments-in-igv}{%
+\section{Visualising alignments in
+IGV}\label{visualising-alignments-in-igv}}
+
+It is often instructive to look at your data in a genome browser. Here,
+we use \href{http://www.broadinstitute.org/igv}{IGV}, a stand-alone
+browser, which has the advantage of being installed locally and
+providing fast access. Please check their website
+(\url{http://www.broadinstitute.org/igv}) for all the formats that IGV
+can display.
+
+Web-based genome browsers, like \href{https://www.ensembl.org}{Ensembl}
+or the \href{https://genome.ucsc.edu/cgi-bin/hgGateway}{UCSC browser},
+are slower, but provide more functionality. They do not only allow for
+more polished and flexible visualisation, but also provide easy access
+to a wealth of annotations and external data sources. This makes it
+straightforward to relate your data with information about repeat
+regions, known genes, epigenetic features or areas of cross-species
+conservation, to name just a few. As such, they are useful tools for
+exploratory analysis.
+
+Visualisation will allow you to get a ``feel'' for the data, as well as
+detecting abnormalities and problems. Also, exploring the data in such a
+way may give you ideas for further analyses. For our visualization
+purposes we will use the BAM and bigWig formats.
+
+When uploading a BAM file into the genome browser, the browser will look
+for the \textbf{index} of the BAM file in the same folder where the BAM
+files is. The index file should have the same name as the BAM file and
+the suffix \texttt{.bai}. Finally, to create the index of a BAM file you
+need to make sure that the file is \textbf{sorted} according to
+chromosomal coordinates.
+
+    \textbf{Sort alignments according to chromosome position and store the
+result in the file with the prefix \texttt{PAX5.sorted}:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}samtools sort \PYZhy{}T PAX5.temp.bam \PYZhy{}o PAX5.sorted.bam PAX5.bam
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Index the sorted file.}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}samtools index PAX5.sorted.bam
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    The indexing will create a file called \texttt{PAX5.sorted.bam.bai}.
+Note that you don't have to specify the name of the index file when
+running \texttt{samtools\ index}.
+
+Another way to visualise the alignments is to convert the BAM file into
+a \textbf{bigWig} file. The bigWig format is for display of dense,
+continuous data and the data will be displayed as a graph. The resulting
+bigWig files are in an indexed binary format.
+
+The BAM to bigWig conversion takes place in two steps. First, we convert
+the BAM file into a bedgraph, called \texttt{PAX5.bedgraph}, using the
+tool \texttt{genomeCoverageBed} from
+\href{https://bedtools.readthedocs.io/en/latest/}{bedtools}.
+
+\textbf{To find the structure of the command and the mandatory arguments
+type:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}genomeCoverageBed
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    Apart from the BAM file, we also need to provide the size of the
+chromosomes for the organism of interest in order to generate the
+bedgraph file. These have to be stored in a tab-delimited file. When
+using the UCSC Genome Browser, Ensembl, or Galaxy, you typically
+indicate which species or genome build you are working with. The way you
+do this for bedtools is to create a ``genome'' file, which simply lists
+the names of the chromosomes (or scaffolds, etc.) and their size (in
+basepairs).
+
+\newpage
+
+\textbf{To obtain chromosome lengths for the human genome, type:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}fetchChromSizes hg19 \PYZgt{} genome/hg19.all.chrom.sizes
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    We next want to remove any chromosome length information for the patched
+chromosomes, which are accessioned scaffold sequences that represent
+assembly updates. That way we will only keep the information of the
+current assembly.
+
+\textbf{Remove this information using \texttt{awk}:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}awk \PY{l+s+s1}{\PYZsq{}\PYZdl{}1 !\PYZti{} /[\PYZus{}.]/\PYZsq{}} genome/hg19.all.chrom.sizes \PYZgt{} genome/hg19.chrom.sizes
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Now generate the bedgraph file, called PAX5.bedgraph, by
+typing:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}genomeCoverageBed \PYZhy{}bg \PYZhy{}ibam PAX5.sorted.bam \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}g genome/hg19.chrom.sizes \PYZgt{} PAX5.bedgraph
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    We then need to convert the bedgraph into a binary graph, called
+\texttt{PAX5.bw}, using the tool \texttt{bedGraphToBigWig} from the UCSC
+tools.
+
+\textbf{To convert the bedgraph type:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bedGraphToBigWig PAX5.bedgraph genome/hg19.chrom.sizes PAX5.bw
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    Now we will load the data into the IGV browser for visualisation.
+
+\textbf{To launch IGV :}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}igv.sh \PY{p}{\PYZam{}}
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{On the top left of your screen choose ``Human hg19'' from the
+drop down menu. Then in order to load the desired files go to ``File
+--\textgreater{} Load from File''.}
+
+\textbf{On the pop up window navigate to the tutorial folder and select
+the file \texttt{PAX5.sorted.bam}.}
+
+\textbf{Repeat these steps in order to load \texttt{PAX5.bw} as well.}
+
+\textbf{Select ``chr1'' from the drop down menu on the top left.}
+
+\textbf{Right click on the name of PAX5.bw and choose ``Maximum'' under
+the ``Windowing Function''.}
+
+\textbf{Right click again and select ``Autoscale''.}
+
+    \hypertarget{questions}{%
+\subsection{Questions}\label{questions}}
+
+\textbf{Q1. Look for gene NASP in the search box. Can you see a PAX5
+binding site near the NASP gene?}\\
+\textit{Hint: use the ``+'' button on the top right zoom in more to see
+the details of the alignment}
+
+\textbf{Q2. What is the main difference between the visualisation of BAM
+and bigWig files?}
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{aligning-the-control-sample-to-the-genome}{%
+\section{Aligning the control sample to the
+genome}\label{aligning-the-control-sample-to-the-genome}}
+
+    In the ChIP-Seq folder you will find another \texttt{.fastq} file called
+\textbf{\texttt{Control.fastq}}.
+
+    \textbf{Use the head command to look at this file:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}head Control.fastq
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Use the information on the FASTQ Wikipedia page
+(\url{http://en.wikipedia.org/wiki/FASTQ_format}) to determine the
+quality encoding this FASTQ file is using. Then, adapting your commands
+to the quality encoding where needed, follow the steps you used to align
+the PAX5 sample to the genome and manipulate the SAM file in order to
+align the control reads to the human genome.}
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{finding-enriched-areas-using-macs}{%
+\section{Finding enriched areas using
+MACS}\label{finding-enriched-areas-using-macs}}
+
+\href{https://github.com/taoliu/MACS}{\textbf{MACS2}} stands for
+\textbf{m}odel-based \textbf{a}nalysis of \textbf{C}hIP-\textbf{S}eq. It
+was designed for identifying transcription factor binding sites. MACS2
+captures the influence of genome complexity to evaluate the significance
+of enriched ChIP regions, and improves the spatial resolution of binding
+sites through combining the information of both sequencing tag position
+and orientation. MACS2 can be easily used for ChIP-Seq data alone, or
+with a control sample to increase specificity.
+
+    \textbf{Consult the MACS2 help file to see the options and parameters:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}macs2 \PYZhy{}\PYZhy{}help
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}macs2 callpeak \PYZhy{}\PYZhy{}help
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    The input for MACS2 can be in ELAND, BED, SAM, BAM or BOWTIE formats
+(you just have to set the \texttt{-\/-format} flag).
+
+Options that you will have to use include:
+
+\begin{verbatim}
+-t to indicate the input ChIP file
+
+-c to indicate the name of the control file
+
+--format the tag file format
+(if this option is not set MACS automatically detects which format the file is)
+
+--name to set the name of the output files
+
+--gsize to set the mappable genome size
+(with the read length we have, 70% of the genome is a fair estimation)
+
+--call-summits to detect all subpeaks in each enriched region and return their summits
+
+--pvalue the P-value cutoff for peak detection.
+\end{verbatim}
+
+\textbf{Now run macs using the following command:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}macs2 callpeak \PYZhy{}t PAX5.sorted.bam \PYZhy{}c Control.sorted.bam \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}\PYZhy{}format BAM \PYZhy{}\PYZhy{}name PAX5 \PYZhy{}\PYZhy{}gsize \PY{l+m}{138000000} \PYZhy{}\PYZhy{}pvalue 1e\PYZhy{}3 \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}\PYZhy{}call\PYZhy{}summits
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    MACS2 generates its peak files in a file format called
+\texttt{.narrowPeak} file. This is a \textbf{BED} format describing
+genomic locations. Many types of genomic data can be represented as
+(sets of) genomic regions. In the following section we will look into
+the BED format in more detail, and we will perform simple operations on
+genomic interval data.
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{file-formats}{%
+\section{File Formats}\label{file-formats}}
+
+\hypertarget{bed-files}{%
+\subsection{BED files}\label{bed-files}}
+
+Over the years a set of commonly used file formats for genomic intervals
+have emerged. Most of these file formats are tabular where each row
+consists of an interval and columns have a pre-defined meaning,
+describing chromosomes, locations, scores, etc. The UCSC web browser has
+an informative list of these at
+\url{http://genome.ucsc.edu/FAQ/FAQformat.html}.
+
+The \textbf{BED} format is the simplest file format of these. A minimal
+bed file has at least three columns denoting \textbf{chromosome},
+\textbf{start} and \textbf{end} of an interval. The following example
+denotes three intervals, two on chromosome chr1 and one on chr2.
+
+    \begin{longtable}[]{@{}ccc@{}}
+\hline
+chromosome & start & end\tabularnewline
+\hline
+\endhead
+chr1 & 50 & 100\tabularnewline
+chr1 & 500 & 1000\tabularnewline
+chr2 & 600 & 800\tabularnewline
+\hline
+\end{longtable}
+
+    BED files follow the UCSC Genome Browser's convention of making the
+start position \textbf{0-based} and the end position \textbf{1-based}.
+In other words, you should interpret the ``start'' column as being 1
+base pair higher than what is represented in the file. For example, the
+following BED feature represents a single base on chromosome 1; namely,
+the 1st base.
+
+    \begin{longtable}[]{@{}cccc@{}}
+\hline
+chromosome & start & end & description\tabularnewline
+\hline
+\endhead
+chr1 & 0 & 1 & I-am-the-first-position-on-chrom-1\tabularnewline
+\hline
+\end{longtable}
+
+    Using the bed format documentation found at
+\url{http://genome.ucsc.edu/FAQ/FAQformat.html\#format1} answer the
+following questions.
+
+    \hypertarget{questions}{%
+\subsubsection{Questions}\label{questions}}
+
+\textbf{Q1. The simplest bed file contains just three columns
+(chromosome, start, end) and is often called BED3 format. What extra
+columns does BED6 contain?}\\
+\textit{Hint: look for information about columns 4 to 6 in the
+documentation \url{http://genome.ucsc.edu/FAQ/FAQformat.html\#format1}}
+
+\textbf{Q2. In the above examples, what are the lengths of the
+intervals?}
+
+\textbf{Q3. Can you output a BED6 format with a transcript called
+``loc1'', transcribed on the forward strand and having three exons of
+length 100 starting at positions 1000, 2000 and 3000?}\\
+\textit{Hint: you will need one line per exon}
+
+
+\newpage
+
+    \hypertarget{narrowpeak-files}{%
+\subsection{narrowPeak files}\label{narrowpeak-files}}
+
+The narrowPeak format is a BED6+4 format used to describe and visualise
+called peaks. Previously, we have used MACS2 to call peaks on the PAX5
+ChIP-seq data set.
+
+    \textbf{View the first 10 lines in \texttt{PAX5\_peaks.narrowPeak} using
+the \texttt{head} command:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}head \PYZhy{}10 PAX5\PYZus{}peaks.narrowPeak
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{NarrowPeak files can also be uploaded to a genome
+browser. Try uploading the peak file generated by MACS2 to IGV.}
+
+    \hypertarget{questions}{%
+\subsubsection{Questions}\label{questions}}
+
+\textbf{Q4. What additional information is given in the narrowPeak file,
+beside the peak locations?}\\
+\textit{Hint: See
+\url{http://genome.ucsc.edu/FAQ/FAQformat.html\#format12} for details}
+
+\textbf{Q5. Does the first peak that was called look convincing to you?}
+
+    \hypertarget{gtf-files}{%
+\subsection{GTF files}\label{gtf-files}}
+
+A second popular format is the \textbf{GTF} format. Each row in a GTF
+formatted file denotes a genomic interval. The GTF format documentation
+can be found at \url{http://mblab.wustl.edu/GTF2.html}.
+
+The three intervals from above might be:
+
+    \begin{longtable}[]{@{}ccccccccc@{}}
+\hline
+seqid & source & type & start & stop & score & strand & phase &
+attributes\tabularnewline
+\hline
+\endhead
+chr1 & gene & exon & 51 & 100 & . & + & 0 & gene\_id
+``001'';transcript\_id ``001.1'';\tabularnewline
+chr1 & gene & exon & 501 & 1000 & . & + & 2 & gene\_id
+``001'';transcript\_id ``001.1'';\tabularnewline
+chr2 & repeat & exon & 601 & 800 & . & + & . &\tabularnewline
+\hline
+\end{longtable}
+
+    The 9th column permits intervals to be grouped and linked in a
+hierarchical fashion. This format is thus popular to describe gene
+models. Note how the first two intervals are linked through a common
+transcript\_id and gene\_id.
+
+The aim of the \href{https://www.gencodegenes.org/}{GENCODE project} is
+to annotate all evidence-based genes and gene features in the entire
+human genome at a high accuracy. Annotation of the GENCODE gene set is
+carried out using a mix of manual annotation, experimental analysis and
+computational biology methods. The GENCODE v18 geneset is available in
+the genome folder.
+
+\textbf{Look at the first 10 lines of the GENCODE annotation file:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}head \PYZhy{}n \PY{l+m}{10} genome/gencode.v18.annotation.gtf
+\end{Verbatim}
+\end{terminalinput}
+
+    \hypertarget{questions}{%
+\subsubsection{Questions}\label{questions}}
+
+\textbf{Q6. In the small example table above, why have the coordinates
+changed from the BED description?}
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{inspecting-genomic-regions-using-bedtools}{%
+\section{Inspecting genomic regions using
+bedtools}\label{inspecting-genomic-regions-using-bedtools}}
+
+In this section we perform simple functions, such as overlaps, on the
+most common file type used for describing genomic regions, the
+\textbf{BED} file. We will examine the results of the ChIP-Seq peak
+calling you have performed on the transcription factor PAX5 and perform
+simple operations on these files, using the
+\href{https://bedtools.readthedocs.io/en/latest/}{bedtools} suite of
+programs. You will then annotate the MACS2 peaks with respect to genomic
+annotations. Finally, we will select the most significantly enriched
+peaks, and extract the genomic sequence flanking their summits, the
+point of highest enrichment.
+
+    The \textbf{bedtools} package permits complex, interval-based
+manipulation of BED and GTF files. They are also very fast. The general
+invocation of \texttt{bedtools} is
+\texttt{bedtools\ \textless{}COMMAND\textgreater{}}.
+
+\textbf{To get an overview of the available commands, simply call
+\texttt{bedtools} without any command or options in the terminal
+window.}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bedtools
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    To get help for a command, type
+\texttt{bedtools\ \textless{}COMMAND\textgreater{}}. Extensive
+documentation and examples are available at
+\url{https://bedtools.readthedocs.org/en/latest/}. We will now use
+bedtools to calculate simple coverage statistics of the peak calls over
+the genome (keep in mind that only peaks on Chromosome 1 are in the
+file).
+
+\textbf{To bring up the help page for the \texttt{bedtools\ genomecov}
+command, type:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bedtools genomecov
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Calculate the genome coverage of the PAX5 peaks:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bedtools genomecov \PYZhy{}i PAX5\PYZus{}peaks.narrowPeak \PYZhy{}g genome/hg19.chrom.sizes
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    In order to biologically interpret the results of ChIP-Seq experiments,
+it is useful to look at the genes and other annotated elements that are
+located in proximity to the identified enriched regions. We will now use
+\texttt{bedtools} to identify how many PAX5 peaks overlap GENCODE genes.
+
+\textbf{First we use \texttt{awk} to filter out only the genes from the
+GTF file:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}awk \PY{l+s+s1}{\PYZsq{}\PYZdl{}3==\PYZdq{}gene\PYZdq{}\PYZsq{}} genome/gencode.v18.annotation.gtf \PY{l+s+se}{\PYZbs{}}
+\PYZgt{} genome/gencode.v18.annotation.genes.gtf
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Next, count the total number of PAX5 peaks:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}wc \PYZhy{}l PAX5\PYZus{}peaks.narrowPeak
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Then use \texttt{bedtools} to find the number overlapping
+GENCODE genes:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bedtools intersect \PYZhy{}a PAX5\PYZus{}peaks.narrowPeak \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}b genome/gencode.v18.annotation.genes.gtf \PY{p}{|} wc \PYZhy{}l
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+\newpage
+
+    You can use the \texttt{bedtools\ closest} command to find the closest
+gene to each peak.
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bedtools closest \PYZhy{}a PAX5\PYZus{}peaks.narrowPeak \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}b genome/gencode.v18.annotation.genes.gtf \PY{p}{|} head
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    Transcription factor binding near to the \textbf{transcript start sites
+(TSS)} of genes is known to drive gene expression or repression, so it
+is of interest to know which TSS regions are bound by PAX5. To determine
+this, we will first create a BED file of the GENCODE TSS using the GTF.
+
+\textbf{You can use this \texttt{awk} command to create the TSS BED
+file:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}awk \PY{l+s+s1}{\PYZsq{}BEGIN \PYZob{}FS=OFS=\PYZdq{}\PYZbs{}t\PYZdq{}\PYZcb{} \PYZob{} if(\PYZdl{}7==\PYZdq{}+\PYZdq{})\PYZob{}tss=\PYZdl{}4\PYZhy{}1\PYZcb{} else \PYZob{} tss = \PYZdl{}5 \PYZcb{} \PYZbs{}}
+\PY{l+s+s1}{print \PYZdl{}1,tss, tss+1, \PYZdq{}.\PYZdq{}, \PYZdq{}.\PYZdq{}, \PYZdl{}7, \PYZdl{}9\PYZcb{}\PYZsq{}} \PY{l+s+se}{\PYZbs{}}
+genome/gencode.v18.annotation.genes.gtf \PYZgt{} genome/gencode.tss.bed
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Now use the \texttt{bedtools\ closest} command again to find the
+closest TSS to each peak:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}sortBed \PYZhy{}i genome/gencode.tss.bed \PYZgt{} genome/gencode.tss.sorted.bed
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bedtools closest \PYZhy{}a PAX5\PYZus{}peaks.narrowPeak \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}b genome/gencode.tss.sorted.bed \PYZgt{} PAX5\PYZus{}closestTSS.txt
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Use head to inspect the results:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}head PAX5\PYZus{}closestTSS.txt
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    You have now matched up all the PAX5 transcription factor peaks to their
+nearest gene transcription start site.
+
+    \hypertarget{questions}{%
+\subsection{Questions}\label{questions}}
+
+\textbf{Q1. Looking at the output of the \texttt{bedtools\ genomecov} we
+ran, what percentage of chromosome 1 do the peaks of PAX5 cover?}
+
+\textbf{Q2. Looking at the output from \texttt{bedtools\ intersect},
+what proportion of PAX5 peaks overlap genes?}
+
+\textbf{Q3. Looking at \texttt{PAX5\_closestTSS.txt}, which gene was
+found to be closest to MACS peak 2?}
+
+    % Add a bibliography block to the postdoc
+
+
+
+\newpage
+
+
+
+
+
+    \hypertarget{motif-analysis}{%
+\section{Motif analysis}\label{motif-analysis}}
+
+    It is often interesting to find out whether we can associate the
+identified binding sites with a sequence pattern or motif. To do so, we
+will identify the summit regions of the strongest PAX5 binding sites,
+retrieve the sequences associated with these regions, and use
+\textbf{\href{http://meme-suite.org/tools/meme}{MEME}} for motif
+analysis.
+
+Since many peak-finding tools merge overlapping areas of enrichment, the
+resulting peaks tend to be much wider than the actual binding sites. The
+summit and its vicinity are the best estimate for the true protein
+binding site, and so it is here where we look for repeated sequence
+patterns, called motifs, to which the transcription factor may
+preferentially bind.
+
+Sub-dividing the enriched areas by accurately partitioning enriched loci
+into a finer-resolution set of individual binding sites, and fetching
+sequences from the summit region where binding motifs are most likely to
+appear enhances the quality of the motif analysis. Sub-peak summit
+sequences have already been called by MACS2 with the
+\texttt{-\/-call-summits} option.
+
+\textit{De novo} motif finding programs take as input a set of sequences
+in which to search for repeated short sequences. Since motif discovery
+is computationally heavy, we will restrict our search for the Oct4 motif
+to the genome regions around the summits of the 300 most significant
+PAX5 subpeaks on Chromosome 1.
+
+    \textbf{Sort the PAX5 peaks by the height of the summit (the maximum
+number of overlapping reads).}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}sort \PYZhy{}k5 \PYZhy{}nr PAX5\PYZus{}summits.bed \PYZgt{} PAX5\PYZus{}summits.sorted.bed
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Using the sorted file, select the top 300 peaks and create a BED
+file for the regions of 60 base pairs centred around the peak summit.}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}awk \PY{l+s+s1}{\PYZsq{}BEGIN\PYZob{}FS=OFS=\PYZdq{}\PYZbs{}t\PYZdq{}\PYZcb{}; NR \PYZlt{} 301 \PYZob{} print \PYZdl{}1, \PYZdl{}2\PYZhy{}30, \PYZdl{}3+29 \PYZcb{}\PYZsq{}} \PY{l+s+se}{\PYZbs{}}
+PAX5\PYZus{}summits.sorted.bed \PYZgt{} PAX5\PYZus{}top300\PYZus{}summits.bed
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    The human genome sequence is available in FASTA format in the
+\texttt{bowtie\_index} directory.
+
+\textbf{Use bedtools to extract the sequences around the PAX5 peak
+summits in FASTA format, which we save in a file named
+PAX5\_top300\_summits.fa.}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}bedtools getfasta \PYZhy{}fi genome/HS19.fa \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}bed PAX5\PYZus{}top300\PYZus{}summits.bed \PYZhy{}fo PAX5\PYZus{}top300\PYZus{}summits.fa
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    We are now ready to perform de novo motif discovery, for which we will
+use the tool \textbf{\href{http://meme-suite.org/tools/meme}{MEME}}.
+
+\textbf{Open a web bowser, go to the MEME website at
+\url{http://meme-suite.org/}, and choose the ``MEME'' tool.}
+
+\newpage
+
+\textbf{Fill in the necessary details, such as:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{the sub-peaks fasta file PAX5\_top300\_summits.fa (will need
+  uploading), or just paste in the sequences.}
+\item
+  \textbf{the number of motifs we expect to find (1 per sequence)}
+\item
+  \textbf{the width of the desired motif (between 6 to 20) in the
+  ``Advanced'' options}
+\item
+  \textbf{the maximum number of motifs to find (3 by default).}
+\end{itemize}
+
+For PAX5 one classical motif is known.
+
+\textbf{Start Search.}
+
+Your MEME analysis will now be queued and will run on a server in the
+US. The results page will refresh automatically and once the tool has
+finished running there will be a link to the results. Depending on how
+busy the servers are your analysis may take a longer or shorter time to
+run.
+
+You can check the load of the server here:
+
+\url{http://meme-suite.org/opal2/dashboard?command=statistics}
+
+    \hypertarget{analyse-the-results-from-meme}{%
+\subsection{Analyse the results from
+MEME}\label{analyse-the-results-from-meme}}
+
+We would like to know if this motif is similar to any other known motif.
+We will use the results from
+\textbf{\href{http://web.mit.edu/meme_v4.11.4/share/doc/tomtom.html}{TOMTOM}}
+for this.
+
+\textbf{On either the results from the web MEME run or the local run
+please follow the link ``MEME html output''. Scroll down until you see
+the first motif logo.}
+
+\textbf{Click under the option Submit/Download and choose the TOMTOM
+button to compare to known motifs in motif databases, and on the new
+page choose to compare your motif to those in the JASPAR CORE and
+UniPROBE Mouse database.}
+
+    \hypertarget{running-meme-locally}{%
+\subsection{Running MEME locally}\label{running-meme-locally}}
+
+If you want to speed things up you may want to run MEME on your own
+machine. You can try to do this as well if you wish, or skip the
+following bonus exercise and go to the next section.
+
+\textbf{To bring up the help page for the local installation of MEME,
+type:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}meme
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Run MEME locally, setting the output directory with the option
+\texttt{-o} (e.g.~-o meme\_out).}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}meme PAX5\PYZus{}top300\PYZus{}summits.fa \PYZhy{}o meme\PYZus{}out \PYZhy{}dna \PYZhy{}nmotifs \PY{l+m}{1} \PYZhy{}minw \PY{l+m}{6} \PYZhy{}maxw \PY{l+m}{20}
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Once MEME has finished running look in this directory for the
+file \texttt{meme.html} and open it in a web browser. You can do this by
+either copying the path to the file to the address bar in Firefox or
+double click on the \texttt{.html} file.}
+
+\newpage
+
+\textbf{Alternatively, you can run the following command to
+automatically open the HTML file in Firefox:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}firefox meme\PYZus{}out/meme.html
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \textbf{Scroll down until you see the first motif logo.}
+
+We would like to know if this motif is similar to any other known motif.
+We will use
+\textbf{\href{http://web.mit.edu/meme_v4.11.4/share/doc/tomtom.html}{TOMTOM}}
+and a set of known motif databases stored in \texttt{motif\_databases}
+for this.
+
+\textbf{To compare your newly found motifs to the motif databases JASPAR
+CORE and UniPROBE Mouse you can run:}
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}tomtom \PYZhy{}o tomtom\PYZus{}out meme\PYZus{}out/meme.html \PY{l+s+se}{\PYZbs{}}
+motif\PYZus{}databases/JASPAR/JASPAR\PYZus{}CORE\PYZus{}2016\PYZus{}vertebrates.meme \PY{l+s+se}{\PYZbs{}}
+motif\PYZus{}databases/MOUSE/uniprobe\PYZus{}mouse.meme
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    Once again, once TOMTOM has finished running look in tomtom\_out for the
+file \texttt{tomtom.html}.
+
+\textbf{Open tomtom.html in a web browser}.
+
+
+
+
+
+\begin{terminalinput}
+\begin{Verbatim}[commandchars=\\\{\}]
+\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}firefox tomtom\PYZus{}out/tomtom.html
+\end{Verbatim}
+\end{terminalinput}
+
+
+
+    \hypertarget{questions}{%
+\subsection{Questions}\label{questions}}
+
+\textbf{Q1. Which motif was found to be the most similar to your motif?}
+
+    \hypertarget{congratulations-you-have-reached-the-end-of-this-tutorial}{%
+\subsection{Congratulations, you have reached the end of this
+tutorial!}\label{congratulations-you-have-reached-the-end-of-this-tutorial}}
+
+We hope you've enjoyed our ChIP-Seq tutorial!
+
+
+    % Add a bibliography block to the postdoc
+
+
+
+\end{document}
