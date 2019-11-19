@@ -93,7 +93,7 @@ class Ipynb_to_tex_converter:
         for i in range(len(lines)):
             if "\\captionsetup" in lines[i]:
                 pp.pprint(lines[i])
-                lines[i] = str("    \\captionsetup{labelformat=nolabel, textfont=bf}")
+                lines[i] = str("    \\captionsetup{labelformat=empty, textfont=bf}")
                 pp.pprint(lines[i])
 
     def _fix_terminal_style(self, lines):
@@ -115,7 +115,7 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
 \newmdenv[
   backgroundcolor=gray,
   fontcolor=white,
-  nobreak=true,
+  nobreak=true, 
 ]{terminalinput}
 
 
@@ -126,10 +126,21 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
         in_verbatim = False
 
         for i in range(len(lines)):
-            if lines[i] == r'''    \begin{Verbatim}[commandchars=\\\{\}]''':
-                if lines[i+1].startswith(r'''{\color{incolor}In '''):
+            if lines[i].startswith(r'''    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}'''):
+                lines[i] = r'''    \adjustboxset{max size={0.85\linewidth}{0.3\paperheight}}'''
+            if lines[i].startswith(r'''    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}'''):
+                lines[i] = r'''    \begin{center}\rule{0.5\linewidth}{.4pt}\end{center}'''
+            if lines[i].startswith(r'''    \begin{tcolorbox}'''):
+                lines[i] = '\n'
+            if lines[i].startswith(r'''\prompt{In}{incolor}{ }{\boxspacing}'''):
+                lines[i] = '\n'
+            if lines[i].startswith(r'''\end{tcolorbox}'''):
+                lines[i] = '\n'
+            if lines[i].startswith(r'''\begin{Verbatim}[commandchars=\\\{\}]'''):
+                #if lines[i+1].startswith(r'''\PY{n+nb}'''):
                     lines[i] = '\n'.join([r'''\begin{terminalinput}''', r'''\begin{Verbatim}[commandchars=\\\{\}]'''])
-                    cmd = lines[i+1].split(' ', maxsplit=2)[-1]
+                    #cmd = lines[i+1].split('\PY{n+nb}', maxsplit=2)[-1]
+                    cmd = lines[i+1]
                     if cmd.startswith("}]:}"):
                         cmd = cmd[len("}]:}"):]
                     lines[i+1] = r'''\llap{\color{black}\LARGE\faKeyboardO\hspace{1em}}''' + cmd
@@ -138,10 +149,11 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
                     pp.pprint(cmd)
                     in_verbatim = True
                     continue
-                else:
-                    lines[i] = r'''    \begin{lstlisting}'''
-                    in_lstlisting = True
-                    continue
+                #else:
+                #    raise Exception("HERE")
+                #    lines[i] = r'''    \begin{lstlisting}'''
+                #    in_lstlisting = True
+                #    continue
 
             if in_lstlisting:
                 if lines[i] == r'''    \end{Verbatim}''':
